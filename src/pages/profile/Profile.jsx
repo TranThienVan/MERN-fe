@@ -16,16 +16,33 @@ const Profile = () => {
 
 	const username = useParams().username;
 
+	// Cloudinary
+	const myWidget = window.cloudinary.createUploadWidget(
+		{
+			cloudName: 'dai677yec',
+			uploadPreset: 'vandeptrai'
+		},
+		(error, result) => {
+			console.log(error);
+			if (!error && result && result.event === 'success') {
+				console.log('Done! Here is the image info: ', result.info);
+				// setProfile({ ...profile, avatarUrl: result.info.url });
+			}
+		}
+	);
+
 	useEffect(
 		() => {
 			const fetchUser = async () => {
 				const res = await axios.get(`/users?username=${username}`);
+
 				setUser(res.data);
 			};
 			fetchUser();
 		},
 		[ username ]
 	);
+	console.log(username);
 
 	return (
 		<div>
@@ -45,6 +62,7 @@ const Profile = () => {
 								src={user.profilePicture ? PF + user.profilePicture : PF + 'person/noAvatar.png'}
 								alt=""
 							/>
+							<button onClick={() => myWidget.open()}>Open widget </button>
 						</div>
 						<div className="profileInfo">
 							<h4 className="profileInfoName">{user.username}</h4>

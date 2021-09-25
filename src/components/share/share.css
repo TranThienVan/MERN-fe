@@ -67,8 +67,9 @@
 	border: none;
 	padding: 7px;
 	border-radius: 5px;
-	background-color: rgb(67, 119, 167);
-	font-weight: 500;
+	width: 80px;
+	background-color: rgb(85, 148, 207);
+	font-weight: 400;
 	margin-right: 20px;
 	cursor: pointer;
 	color: white;

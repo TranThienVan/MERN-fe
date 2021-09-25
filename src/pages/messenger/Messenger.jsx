@@ -3,7 +3,7 @@ import './messenger.css';
 import Topbar from '../../components/topbar/Topbar';
 import Conversation from '../../components/conversations/Conversation';
 import Message from '../../components/message/Message';
-import ChatOnline from '../../components/chatOnline/ChatOnline';
+// import ChatOnline from '../../components/chatOnline/ChatOnline';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import {io} from 'socket.io-client'
@@ -14,7 +14,7 @@ const Messenger = () => {
 	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
 	const [arrivalMessage, setArrivalMessage] = useState(null);
-	const [onlineUsers, setOnlineUsers] = useState([]);
+	// const [onlineUsers, setOnlineUsers] = useState([]);
 	const socket = useRef();
 	const { user } = useContext(AuthContext);
 	const scrollRef = useRef();
@@ -36,12 +36,12 @@ const Messenger = () => {
 		setMessages((prev) => [...prev, arrivalMessage]);
 	}, [arrivalMessage, currentChat]);
   
-	useEffect(() => {
-	  socket.current.emit("addUser", user._id);
-	  socket.current.on("getUsers", (users) => {
-		setOnlineUsers(users)
-	  });
-	}, [user]);
+	// useEffect(() => {
+	//   socket.current.emit("addUser", user._id);
+	//   socket.current.on("getUsers", (users) => {
+	// 	setOnlineUsers(users)
+	//   });
+	// }, [user]);
   
 	useEffect(() => {
 	  const getConversations = async () => {
@@ -131,11 +131,11 @@ const Messenger = () => {
 						
 					</div>
 				</div>
-				<div className="chatOnline">
+				{/* <div className="chatOnline">
 					<div className="chatOnlineWrapper">
 						<ChatOnline onlineUsers={onlineUsers} currentId={user._id} setCurrentChat={setCurrentChat}/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

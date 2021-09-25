@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './topbar.css';
-import { Search, Person, Home, Telegram, Notifications, ExitToApp, LaptopWindows } from '@material-ui/icons';
+import { Search, Person, Home, Telegram, Notifications, ExitToApp} from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -62,9 +62,9 @@ const Topbar = () => {
 						<span className="topbarIconBadge">3</span>
 					</div>
 				</div>
-				<Link to={`/profile/${user.username}`}>
+				<Link to={`/profile/${user?.username}`}>
 					<img
-						src={user.profilePicture ? PF + user.profilePicture : PF + 'person/noAvatar.png'}
+						src={user?.profilePicture ? PF + user?.profilePicture : PF + 'person/noAvatar.png'}
 						alt=""
 						className="topbarImg"
 					/>

@@ -12,14 +12,13 @@ const Rightbar = ({ user }) => {
 	const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 	const [ friends, setFriends ] = useState([]);
 	const { user: currentUser } = useContext(AuthContext);
-	const [ followed, setFollowed ] = useState(currentUser.followings.includes(user?.id));
-	console.log(user);
+	const [ followed, setFollowed ] = useState(currentUser?.followings.includes(user?.id));
 
 	useEffect(
 		() => {
 			const getFriends = async () => {
 				try {
-					const friendList = await axios.get('/users/friends/' + user._id);
+					const friendList = await axios.get('/users/friends/' + user?._id);
 					setFriends(friendList.data);
 				} catch (err) {
 					console.log(err);
@@ -55,6 +54,7 @@ const Rightbar = ({ user }) => {
 					</span>
 				</div>
 				<img className="rightbarAd" src="assets/ad.png" alt="" />
+				<img className="rightbarAd" src="https://doomshop.xyz/wp-content/uploads/2019/04/quangcao7.jpg" alt="" />
 				<h4 className="rightbarTitle">Online Friends</h4>
 				<ul className="rightbarFriendList">{Users.map((u) => <Online key={u.id} user={u} />)}</ul>
 			</div>
@@ -65,7 +65,7 @@ const Rightbar = ({ user }) => {
 	const ProfileRightbar = () => {
 		return (
 			<div>
-				{user.username !== currentUser.username && (
+				{user?.username !== currentUser?.username && (
 					<button className="rightbarFollowButton" onClick={handleClick}>
 						{followed ? 'Unfollow' : 'Follow'}
 						{followed ? <Remove /> : <Add />}
@@ -79,7 +79,7 @@ const Rightbar = ({ user }) => {
 					</div>
 					<div className="rightbarInfoItem">
 						<span className="rightbarInfoKey">From:</span>
-						<span className="rightbarInfoValue">{user.from}</span>
+						<span className="rightbarInfoValue">{user?.from}</span>
 					</div>
 					<div className="rightbarInfoItem">
 						<span className="rightbarInfoKey">Relationship:</span>
@@ -88,7 +88,7 @@ const Rightbar = ({ user }) => {
 						</span>
 					</div>
 				</div>
-				<h4 className="rightbarTitle">User friends</h4>
+				<h4 className="rightbarTitle">Followings</h4>
 				<div className="rightbarFollowings">
 					{friends.map((friend) => (
 						<Link to={'/profile/' + friend.username} style={{ color: 'black', textDecoration: 'none' }}>
@@ -111,7 +111,7 @@ const Rightbar = ({ user }) => {
 
 	return (
 		<div className="rightbar">
-			<div className="rightbarWrapper">{user ? <ProfileRightbar /> : <HomeRightbar />}</div>
+			<div className="rightbarWrapper">{user ? <ProfileRightbar key={user?._id} /> : <HomeRightbar />}</div>
 		</div>
 	);
 };
