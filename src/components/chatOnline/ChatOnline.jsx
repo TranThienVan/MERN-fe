@@ -21,7 +21,6 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
 	  setOnlineFriends(friends.filter((f) => onlineUsers.includes(f._id)));
 	}, [friends, onlineUsers]);
 
-	console.log(onlineFriends)
 
 	
 

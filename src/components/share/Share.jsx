@@ -3,14 +3,18 @@ import './share.css';
 import { PermMedia, Label, Room, EmojiEmotions, Cancel } from '@material-ui/icons';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import api from '../../apiService';
 
 const Share = () => {
-	const { user } = useContext(AuthContext);
+	// const { user } = useContext(AuthContext);
+	const user = useSelector((state) => state.auth.user);
 	const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 	const desc = useRef();
 	const [ file, setFile ] = useState(null);
 
 	const submitHandler = async (e) => {
+		console.log("Share")
 		e.preventDefault();
 		const newPost = {
 			userId: user._id,
@@ -22,16 +26,17 @@ const Share = () => {
 			data.append('name', fileName);
 			data.append('file', file);
 			newPost.img = fileName;
-			console.log(newPost);
 			try {
-				await axios.post('/upload', data);
+				await api.post('/upload', data);
 			} catch (err) {}
 		}
 		try {
-			await axios.post('/posts', newPost);
-			await axios.get('');
+			console.log("something hrere")
+			await api.post('/posts', newPost);
 			window.location.reload();
-		} catch (err) {}
+		} catch (err) {
+			console.log(err)
+		}
 	};
 	return (
 		<div className="share">
@@ -39,11 +44,11 @@ const Share = () => {
 				<div className="shareTop">
 					<img
 						className="shareProfileImg"
-						src={user.profilePicture ? PF + user.profilePicture : PF + 'person/noAvatar.png'}
+						src={user?.profilePicture ? user.profilePicture : PF + 'person/noAvatar.png'}
 						alt=""
 					/>
 					<input
-						placeholder={"What's in your mind, " + user.username + '?'}
+						placeholder={"What's in your mind, " + user?.username + '?'}
 						type="text"
 						className="shareInput"
 						ref={desc}

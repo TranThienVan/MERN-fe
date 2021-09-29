@@ -5,18 +5,23 @@ import { AuthContext } from '../../context/AuthContext';
 
 import { CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { authAction } from '../../redux/actions/auth.actions';
 
 const Login = () => {
 	// Quickly form require
 	const email = useRef();
 	const password = useRef();
-	const { user, isFetching, dispatch } = useContext(AuthContext);
+	// const { user, isFetching, dispatch } = useContext(AuthContext);
+
+	const dispatch = useDispatch();
+
+	const user = useSelector((state) => state.auth.user);
 
 	const handleClick = (e) => {
 		e.preventDefault();
-		loginCall({ email: email.current.value, password: password.current.value }, dispatch);
+		dispatch(authAction.login({ email: email.current.value, password: password.current.value }));
 	};
-	console.log(user);
 
 	return (
 		<div className="login">
@@ -36,13 +41,14 @@ const Login = () => {
 							className="loginInput"
 							ref={password}
 						/>
-						<button className="loginButton" type="submit" disabled={isFetching}>
-							{isFetching ? <CircularProgress color="white" size="20px" /> : 'Log In'}
+						<button className="loginButton" type="submit">
+							{/* disabled={isFetching} */}
+							{/* {isFetching ? <CircularProgress color="white" size="20px" /> : 'Log In'} */}
 						</button>
 						<span className="loginForgot">Forgot Password?</span>
 						<Link to="/register">
 							<button className="loginRegisterButton">
-								{isFetching ? <CircularProgress color="white" size="20px" /> : 'Create a New Account'}
+								{/* {isFetching ? <CircularProgress color="white" size="20px" /> : 'Create a New Account'} */}
 							</button>
 						</Link>
 					</form>

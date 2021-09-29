@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import api from '../../apiService';
 import './conversation.css';
 
 const Conversation = ({ conversation, currentUser }) => {
@@ -12,7 +13,7 @@ const Conversation = ({ conversation, currentUser }) => {
 
 			const getUser = async () => {
 				try {
-					const res = await axios('/users?userId=' + friendId);
+					const res = await api('/users?userId=' + friendId);
 					setUser(res.data);
 				} catch (err) {
 					console.log(err);
@@ -26,7 +27,7 @@ const Conversation = ({ conversation, currentUser }) => {
 	return (
 		<div className="conversation">
 			<img
-				src={user?.profilePicture ? PF + user.profilePicture : PF + 'person/noAvatar.png'}
+				src={user?.profilePicture ? user.profilePicture : PF + 'person/noAvatar.png'}
 				alt=""
 				className="conversationImg"
 			/>

@@ -7,6 +7,8 @@ import Message from '../../components/message/Message';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import {io} from 'socket.io-client'
+import { useSelector } from 'react-redux';
+import api from '../../apiService';
 
 const Messenger = () => {
 	const [conversations, setConversations] = useState([]);
@@ -16,7 +18,7 @@ const Messenger = () => {
 	const [arrivalMessage, setArrivalMessage] = useState(null);
 	// const [onlineUsers, setOnlineUsers] = useState([]);
 	const socket = useRef();
-	const { user } = useContext(AuthContext);
+	const user = useSelector(state => state.auth.user)
 	const scrollRef = useRef();
   
 	useEffect(() => {
@@ -46,7 +48,7 @@ const Messenger = () => {
 	useEffect(() => {
 	  const getConversations = async () => {
 		try {
-		  const res = await axios.get("/conversations/" + user._id);
+		  const res = await api.get("/conversations/" + user._id);
 		  setConversations(res.data);
 		} catch (err) {
 		  console.log(err);
@@ -55,10 +57,12 @@ const Messenger = () => {
 	  getConversations();
 	}, [user._id]);
   
+	console.log(conversations)
+
 	useEffect(() => {
 	  const getMessages = async () => {
 		try {
-		  const res = await axios.get("/messages/" + currentChat?._id);
+		  const res = await api.get("/messages/" + currentChat?._id);
 		  setMessages(res.data);
 		} catch (err) {
 		  console.log(err);
@@ -86,7 +90,7 @@ const Messenger = () => {
 	  });
   
 	  try {
-		const res = await axios.post("/messages", message);
+		const res = await api.post("/messages", message);
 		setMessages([...messages, res.data]);
 		setNewMessage("");
 	  } catch (err) {

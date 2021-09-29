@@ -4,24 +4,17 @@ import Post from '../post/Post';
 import './feed.css';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import { useDispatch, useSelector} from 'react-redux';
+import api from '../../apiService';
+import { authAction } from '../../redux/actions/auth.actions';
 
 const Feed = ({ username }) => {
-	const [ posts, setPosts ] = useState([]);
-	const { user } = useContext(AuthContext);
-
+	const user = useSelector(state => state.auth.user)
+	const posts = useSelector(state => state.auth.posts)
+	const dispatch = useDispatch()
 	useEffect(
 		() => {
-			const fetchPosts = async () => {
-				const res = username
-					? await axios.get('/posts/profile/' + username)
-					: await axios.get('posts/timeline/' + user._id);
-				setPosts(
-					res.data.sort((p1, p2) => {
-						return new Date(p2.createdAt) - new Date(p1.createdAt);
-					})
-				);
-			};
-			fetchPosts();
+			dispatch(authAction.getPost({user, username}))
 		},
 		[ username, user?._id ]
 	);
@@ -30,7 +23,7 @@ const Feed = ({ username }) => {
 		<div className="feed">
 			<div className="feedWrapper">
 				{(!username || username === user?.username) && <Share />}
-				{posts.map((p) => <Post key={p._id} post={p} />)}
+				{posts?.map((p) => <Post key={p._id} post={p} username={username}/>)}
 			</div>
 		</div>
 	);

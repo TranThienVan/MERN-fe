@@ -3,45 +3,73 @@ import './rightbar.css';
 import Online from '../online/Online';
 import axios from 'axios';
 import { Users } from '../../dummyData';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Add, Remove } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
+import api from '../../apiService';
+import { authAction } from '../../redux/actions/auth.actions';
+import { useDispatch } from 'react-redux';
 
-const Rightbar = ({ user }) => {
+
+const Rightbar = () => {
 	// Folder URL (assets)
 	const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 	const [ friends, setFriends ] = useState([]);
-	const { user: currentUser } = useContext(AuthContext);
-	const [ followed, setFollowed ] = useState(currentUser?.followings.includes(user?.id));
+	// const { user: currentUser } = useContext(AuthContext);
+
+	const user = useSelector(state => state.auth.user)
+	const currentUser = useSelector(state => state.auth.currentUser)
+	
+	const followed = user?.followings?.includes(currentUser?._id);
+
+	const dispatch = useDispatch()
+	
+	const location = useLocation()
+
 
 	useEffect(
 		() => {
-			const getFriends = async () => {
+			const getFriends = async ({user}) => {
 				try {
-					const friendList = await axios.get('/users/friends/' + user?._id);
+					const friendList = await api.get('/users/friends/' + user?._id);
 					setFriends(friendList.data);
 				} catch (err) {
 					console.log(err);
 				}
 			};
-			getFriends();
+			if(currentUser?._id && currentUser?._id !== user?._id) {
+				getFriends({user:currentUser});
+			} else {
+				getFriends({user})
+			}
 		},
-		[ user ]
+		[ currentUser ]
 	);
+
+	// const handleClick = async () => {
+	// 	try {
+	// 		if (followed) {
+	// 			await api.put('/users/' + currentUser._id + '/unfollow', { userId: user._id });
+	// 			dispatchEvent({ type: 'UNFOLLOW', payload: currentUser._id });
+	// 		} else {
+	// 			await api.put('/users/' + currentUser._id + '/follow', { userId: user._id });
+	// 			dispatchEvent({ type: 'FOLLOW', payload: currentUser._id });
+	// 		}
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// 	setFollowed(!followed);
+	// };
 
 	const handleClick = async () => {
 		try {
-			if (followed) {
-				await axios.put('/users/' + user._id + '/unfollow', { userId: currentUser._id });
-				dispatchEvent({ type: 'UNFOLLOW', payload: user._id });
-			} else {
-				await axios.put('/users/' + user._id + '/follow', { userId: currentUser._id });
-				dispatchEvent({ type: 'FOLLOW', payload: user._id });
-			}
+		
+			dispatch(authAction.follow({currentUser, user}))
+			
 		} catch (err) {
 			console.log(err);
 		}
-		setFollowed(!followed);
 	};
 
 	const HomeRightbar = () => {
@@ -65,37 +93,40 @@ const Rightbar = ({ user }) => {
 	const ProfileRightbar = () => {
 		return (
 			<div>
-				{user?.username !== currentUser?.username && (
-					<button className="rightbarFollowButton" onClick={handleClick}>
-						{followed ? 'Unfollow' : 'Follow'}
-						{followed ? <Remove /> : <Add />}
-					</button>
-				)}
-				<h4 className="rightbarTitle">User information</h4>
-				<div className="rightbarInfo">
-					<div className="rightbarInfoItem">
-						<span className="rightbarInfoKey">City:</span>
-						<span className="rightbarInfoValue">{user.city}</span>
+					<div>
+						{currentUser?._id !==user?._id? (<button className="rightbarFollowButton" onClick={handleClick}>
+							{followed ? 'Unfollow' : 'Follow'}
+							{followed ? <Remove /> : <Add />}
+						</button>):(<div/>)}
+						
+						<h4 className="rightbarTitle">User information</h4>
+						<div className="rightbarInfo">
+							<div className="rightbarInfoItem">
+								<span className="rightbarInfoKey">City:</span>
+								<span className="rightbarInfoValue">{currentUser?.city}</span>
+							</div>
+							<div className="rightbarInfoItem">
+								<span className="rightbarInfoKey">From:</span>
+								<span className="rightbarInfoValue">{currentUser?.from}</span>
+							</div>
+							<div className="rightbarInfoItem">
+								<span className="rightbarInfoKey">Relationship:</span>
+								<span className="rightbarInfoValue">
+									{currentUser?.relationship === 1 ? 'Single' : currentUser?.relationship === 2 ? 'Married' : '-'}
+								</span>
+							</div>
+						</div>
 					</div>
-					<div className="rightbarInfoItem">
-						<span className="rightbarInfoKey">From:</span>
-						<span className="rightbarInfoValue">{user?.from}</span>
-					</div>
-					<div className="rightbarInfoItem">
-						<span className="rightbarInfoKey">Relationship:</span>
-						<span className="rightbarInfoValue">
-							{user.relationship === 1 ? 'Single' : user.relationship === 2 ? 'Married' : '-'}
-						</span>
-					</div>
-				</div>
+			
+				
 				<h4 className="rightbarTitle">Followings</h4>
 				<div className="rightbarFollowings">
-					{friends.map((friend) => (
+					{friends.length && friends.map((friend) => (
 						<Link to={'/profile/' + friend.username} style={{ color: 'black', textDecoration: 'none' }}>
 							<div className="rightbarFollowing">
 								<img
 									src={
-										friend.profilePicture ? PF + friend.profilePicture : PF + 'person/noAvatar.png'
+										friend.profilePicture ? friend.profilePicture : PF + 'person/noAvatar.png'
 									}
 									alt=""
 									className="rightbarFollowingImg"
@@ -111,7 +142,7 @@ const Rightbar = ({ user }) => {
 
 	return (
 		<div className="rightbar">
-			<div className="rightbarWrapper">{user ? <ProfileRightbar key={user?._id} /> : <HomeRightbar />}</div>
+			<div className="rightbarWrapper">{location.pathname==="/" ? <HomeRightbar />: <ProfileRightbar key={currentUser?._id} />  }</div>
 		</div>
 	);
 };
