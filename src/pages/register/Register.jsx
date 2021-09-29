@@ -3,6 +3,8 @@ import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import './register.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { authAction } from '../../redux/actions/auth.actions';
 
 const Register = () => {
 	// Quickly form require
@@ -10,6 +12,8 @@ const Register = () => {
 	const email = useRef();
 	const password = useRef();
 	const passwordAgain = useRef();
+
+	const dispatch = useDispatch();
 
 	const history = useHistory();
 
@@ -23,12 +27,13 @@ const Register = () => {
 				email: email.current.value,
 				password: password.current.value
 			};
-			try {
-				await axios.post('/auth/register', user);
-				history.push('/login');
-			} catch (err) {
-				console.log(err);
-			}
+			// try {
+			// 	await axios.post('/auth/register', user);
+			// 	history.push('/login');
+			// } catch (err) {
+			// 	console.log(err);
+			// }
+			dispatch(authAction.register(user));
 		}
 	};
 
