@@ -13,6 +13,7 @@
 }
 .topbarCenter {
 	flex: 4;
+	position: relative;
 }
 .topbarRight {
 	flex: 4;
@@ -122,4 +123,12 @@
 /* Search bar results */
 .hiddenSearchbar {
 	opacity: 1;
+	border: 1px solid black;
+	display: flex;
+	justify-content: space-between;
+}
+
+.searchbarResults {
+	display: flex;
+	justify-content: space-between;
 }

@@ -57,8 +57,8 @@ const Topbar = () => {
 				</div>
 				<div className="hiddenSearchbar">
 						{data?.map((user) => (
-							<Link to={`/profile/${user?.username}`}>
-								<img src={ PF + user?.profilePicture} alt="user Profile picture" height="20px"/>
+							<Link to={`/profile/${user?.username}`} className="searchbarResults">
+								<img src={user?.profilePicture} alt="user Profile picture" height="20px"/>
 								<span>{user?.username}</span>
 							</Link>
 						))}
