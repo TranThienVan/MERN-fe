@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import Share from '../share/Share';
 import Post from '../post/Post';
 import './feed.css';
-import axios from 'axios';
-import { AuthContext } from '../../context/AuthContext';
 import { useDispatch, useSelector} from 'react-redux';
-import api from '../../apiService';
 import { authAction } from '../../redux/actions/auth.actions';
 
 const Feed = ({ username }) => {
@@ -23,7 +20,7 @@ const Feed = ({ username }) => {
 		<div className="feed">
 			<div className="feedWrapper">
 				{(!username || username === user?.username) && <Share />}
-				{posts?.map((p) => <Post key={p._id} post={p} username={username}/>)}
+				{posts?.map((p) => <Post key={p?._id} post={p} username={username} userId={user?._id}/>)}
 			</div>
 		</div>
 	);

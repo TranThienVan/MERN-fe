@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './rightbar.css';
 import Online from '../online/Online';
-import axios from 'axios';
 import { Users } from '../../dummyData';
 import { Link, useLocation } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 import { Add, Remove } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import api from '../../apiService';

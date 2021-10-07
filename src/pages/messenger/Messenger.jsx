@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './messenger.css';
 import Topbar from '../../components/topbar/Topbar';
 import Conversation from '../../components/conversations/Conversation';
 import Message from '../../components/message/Message';
-// import ChatOnline from '../../components/chatOnline/ChatOnline';
-import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 import {io} from 'socket.io-client'
 import { useSelector } from 'react-redux';
 import api from '../../apiService';
@@ -19,6 +16,7 @@ const Messenger = () => {
 	// const [onlineUsers, setOnlineUsers] = useState([]);
 	const socket = useRef();
 	const user = useSelector(state => state.auth.user)
+
 	const scrollRef = useRef();
   
 	useEffect(() => {
@@ -38,12 +36,10 @@ const Messenger = () => {
 		setMessages((prev) => [...prev, arrivalMessage]);
 	}, [arrivalMessage, currentChat]);
   
-	// useEffect(() => {
-	//   socket.current.emit("addUser", user._id);
-	//   socket.current.on("getUsers", (users) => {
-	// 	setOnlineUsers(users)
-	//   });
-	// }, [user]);
+	useEffect(() => {
+	  socket.current.emit("addUser", user._id);
+	
+	}, [user]);
   
 	useEffect(() => {
 	  const getConversations = async () => {

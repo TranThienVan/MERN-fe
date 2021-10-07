@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './topbar.css';
 import { Search, Person, Home, Telegram, Notifications, ExitToApp} from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { authAction } from '../../redux/actions/auth.actions';
 import api from '../../apiService';
@@ -57,9 +56,14 @@ const Topbar = () => {
 				</div>
 				<div className="hiddenSearchbar">
 						{data?.map((user) => (
-							<Link to={`/profile/${user?.username}`} className="searchbarResults">
-								<img src={user?.profilePicture} alt="user Profile picture" height="20px"/>
-								<span>{user?.username}</span>
+							<Link to={`/profile/${user?.username}`} className="searchbarResults" style={{ textDecoration: 'none', color: 'black' }}>
+									<div style={{flex:"6", textAlign:'center'}}>
+										<img src={user?.profilePicture ? user?.profilePicture : PF + 'person/noAvatar.png'} alt="" height="20px" style={{borderRadius: "50%", width:"20px", height:"20px", objectFit:'contain'}}/>
+									</div>
+
+									<div style={{flex:"6"}}>
+										<span style={{flex:"6"}}>{user?.username}</span>
+									</div>
 							</Link>
 						))}
 				</div>

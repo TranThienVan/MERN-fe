@@ -1,35 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './post.css';
-import axios from 'axios';
 import { MoreVert } from '@material-ui/icons';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { authAction } from '../../redux/actions/auth.actions';
 import api from '../../apiService';
+import { Send } from '@material-ui/icons';
 
-const Post = ({ post, username }) => {
+const Post = ({ post, username, userId }) => {
 	// Like function
 	const dispatch = useDispatch()
 	const [ like, setLike ] = useState(post.likes.length);
 	const [openComments, setOpenComments] = useState(false)
 	const [content, setContent] = useState("")
-	// const [ isLiked, setIsLiked ] = useState(false);
+
 	const loginUser = useSelector(state=> state.auth.user)
 	const [ user, setUser ] = useState({});
-	console.log("post", post)
+
 	// Folder URL (assets)
 	const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-	// const { user: currentUser } = useContext(AuthContext);
 	const currentUser = useSelector(state => state.auth.user)
-
-	// useEffect(
-	// 	() => {
-	// 		setIsLiked(post.likes.includes(currentUser?._id));
-	// 	},
-	// 	[ currentUser?._id, post.likes ]
-	// );
 
 	useEffect(
 		() => {
@@ -39,7 +30,7 @@ const Post = ({ post, username }) => {
 			};
 			fetchUser();
 		},
-		[  ]
+		[post?.userId, userId]
 	);
 
 	const likeHandler = () => {
@@ -106,12 +97,25 @@ const Post = ({ post, username }) => {
 				
 				<div className={openComments? "comment-active comments":"comment"}>
 					<div>
-						<form onSubmit={submitComment}>
-							<input placeholder="Comment..." onChange={handleOnChange} value={content}/>
-							<button type="submit">Comment</button>
+						<form onSubmit={submitComment} className="CommentForm" >
+							<input className="commentInput" placeholder="Comment..." onChange={handleOnChange} value={content}/>
+							<button className="commentButton" type="submit">Comment</button>
+							
 						</form>
 					</div>
-					{post.comments?.map((comment)=>(<div>{comment.userId?.username} {comment.content}</div>))}
+					{post.comments?.map((comment)=>(
+					<div className="commentSection">
+						<div className="commentName">
+							<div >
+								<img className="commentPicture" src={comment.userId?.profilePicture ? comment.userId?.profilePicture : PF + "person/noAvatar.png"} alt="" /> 
+							</div>
+							<div style={{marginLeft:"10px", marginTop:'2px'}}>
+								{comment.userId?.username}
+							</div>
+						</div>
+						<div className="commentContent">{comment.content}</div>
+						 
+					</div>))}
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,6 @@
 import * as types from '../constants/auth.constants';
 
 import api from '../../apiService';
-import { toast } from 'react-toastify';
 
 const register = ({ username, email, password }) => async (dispatch) => {
 	dispatch({ type: types.AUTH_REGISTER_REQUEST, payload: null });

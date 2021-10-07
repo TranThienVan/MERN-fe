@@ -51,3 +51,23 @@
 .profileRightBottom {
 	display: flex;
 }
+
+/* Buttons */
+.coverButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+
+	cursor: pointer;
+	background-color: rgba(206, 201, 201, 0.5);
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.avatarButton {
+	background-color: white;
+	font-size: 24px !important;
+	margin: 1px;
+	z-index: 999;
+	cursor: pointer;
+}

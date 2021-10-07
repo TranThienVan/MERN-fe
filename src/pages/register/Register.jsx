@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React, { useRef } from 'react';
-import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import './register.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authAction } from '../../redux/actions/auth.actions';
 
 const Register = () => {
@@ -14,8 +12,6 @@ const Register = () => {
 	const passwordAgain = useRef();
 
 	const dispatch = useDispatch();
-
-	const history = useHistory();
 
 	const handleClick = async (e) => {
 		e.preventDefault();

@@ -1,11 +1,7 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import './login.css';
-import { loginCall } from '../../apiCalls';
-import { AuthContext } from '../../context/AuthContext';
-
-import { CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authAction } from '../../redux/actions/auth.actions';
 
 const Login = () => {
@@ -15,8 +11,6 @@ const Login = () => {
 	// const { user, isFetching, dispatch } = useContext(AuthContext);
 
 	const dispatch = useDispatch();
-
-	const user = useSelector((state) => state.auth.user);
 
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -42,12 +36,14 @@ const Login = () => {
 							ref={password}
 						/>
 						<button className="loginButton" type="submit">
+							Login
 							{/* disabled={isFetching} */}
 							{/* {isFetching ? <CircularProgress color="white" size="20px" /> : 'Log In'} */}
 						</button>
 						<span className="loginForgot">Forgot Password?</span>
 						<Link to="/register">
 							<button className="loginRegisterButton">
+								Register
 								{/* {isFetching ? <CircularProgress color="white" size="20px" /> : 'Create a New Account'} */}
 							</button>
 						</Link>

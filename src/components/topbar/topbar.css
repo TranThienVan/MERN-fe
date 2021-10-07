@@ -6,6 +6,7 @@
 	align-items: center;
 	position: sticky;
 	top: 0;
+	z-index: 999;
 }
 
 .topbarLeft {
@@ -76,6 +77,7 @@
 	justify-content: center;
 	margin: 0 auto;
 	text-align: center;
+	position: relative;
 }
 
 .searchInput {
@@ -123,12 +125,27 @@
 /* Search bar results */
 .hiddenSearchbar {
 	opacity: 1;
-	border: 1px solid black;
+	min-width: 20vw;
+	border: 1px solid rgb(207, 203, 203);
+	background-color: rgb(240, 240, 240);
+	border-radius: 5px;
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	margin-top: 20px;
+	position: absolute;
+	top: 20px;
+	left: 6.6vw;
 }
 
 .searchbarResults {
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
+	align-items: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	min-height: 20px;
+}
+
+.hiddenSearchbar :hover {
+	background-color: rgb(226, 222, 222);
 }

@@ -1,8 +1,6 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './share.css';
 import { PermMedia, Label, Room, EmojiEmotions, Cancel } from '@material-ui/icons';
-import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import api from '../../apiService';
 

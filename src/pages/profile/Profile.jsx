@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Topbar from '../../components/topbar/Topbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Feed from '../../components/feed/Feed';
 import Rightbar from '../../components/rightbar/Rightbar';
 import './profile.css';
-import axios from 'axios';
-
 import { useParams } from 'react-router';
 import api from '../../apiService';
 import { useDispatch, useSelector } from 'react-redux';
 import { authAction } from '../../redux/actions/auth.actions';
+import { AddAPhoto } from '@material-ui/icons';
+import { AddPhotoAlternate } from '@material-ui/icons';
 
 const Profile = () => {
 	// Folder URL (assets)
@@ -20,8 +20,6 @@ const Profile = () => {
 	const currentUser = useSelector((state) => state.auth.currentUser);
 	const user = useSelector((state) => state.auth.user);
 	const dispatch = useDispatch();
-
-	const [coverURL, setCoverURL] = useState("")
 
 	// Fetch username
 	useEffect(
@@ -114,9 +112,6 @@ const Profile = () => {
 									}
 									alt=""
 								/>
-								<button onClick={handleChangeCover}>Change cover </button>
-								<button onClick={handleChangeAvatar}>Change avatar </button>
-
 								
 							</div>
 							<div className="profileInfo">
@@ -138,13 +133,21 @@ const Profile = () => {
 									src={user?.coverPicture ? user.coverPicture : PF + 'person/noCover.png'}
 									alt=""
 								/>
-								<img
-									className="profileUserImg"
-									src={user?.profilePicture ? user.profilePicture : PF + 'person/noAvatar.png'}
-									alt=""
-								/>
-								<button onClick={handleChangeCover}>Change cover </button>
-								<button onClick={handleChangeAvatar}>Change avatar </button>
+								<div style={{position:'relative', width:'150px', height:'100%', margin:'auto'}}>
+									<img
+										className="profileUserImg"
+										src={user?.profilePicture ? user.profilePicture : PF + 'person/noAvatar.png'}
+										alt=""
+									/>
+									<div style={{position:'absolute', right:'0', bottom:'1.5rem'}}>
+										<AddAPhoto className="avatarButton" onClick={handleChangeAvatar} style={{ borderRadius: "50%", cursor:"pointer"}}/>
+									</div>
+									
+								</div>
+								
+								<AddPhotoAlternate htmlColor="white" className="coverButton" onClick={handleChangeCover}/>
+								{/* <button className="coverButton" onClick={handleChangeCover}>Change cover </button> */}
+								{/* <button className="avatarButton" onClick={handleChangeAvatar}>Change avatar </button> */}
 							</div>
 							<div className="profileInfo">
 								<h4 className="profileInfoName">{user?.username}</h4>
